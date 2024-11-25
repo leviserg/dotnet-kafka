@@ -1,0 +1,80 @@
+PowerShell:
+> docker exec -it kafka-broker /bin/bash
+> cd /opt/bitnami/kafka/bin
+> ls {bin, config, logs ...}
+> cd bin
+
+Message fmt from CLI:
+
+        ./kafka-console-producer.sh \
+            --bootstrap-server localhost:29092 \
+            --property "parse.key=true" \
+            --property "key.separator=:" \
+            --topic kafka.learning.orders
+			
+9999:{"Id":"9999","Description":"AAAAAAAAAAAAAAAAAAAAA","Price":999.999}
+
+###### Topic ######
+
+Create Topic
+
+./kafka-topics.sh \
+	--bootstrap-server localhost:29092 \
+	--create \
+	--topic kafka.usecase.students \
+	--partitions 2 \
+	--replication-factor 1
+
+Topics List
+
+./kafka-topics.sh \
+	--bootstrap-server localhost:29092 \
+	--list
+
+Topics Details
+
+./kafka-topics.sh \
+	--bootstrap-server localhost:29092 \
+	--describe
+
+Deleting Topics
+
+./kafka-topics.sh \
+	--bootstrap-server localhost:29092 \
+	--delete \
+	--topic kafka.learning.orders
+	
+
+###### Message ######
+
+Push message ->
+
+./kafka-console-producer.sh \
+	--bootstrap-server localhost:29092 \
+	--property "parse.key=true" \
+	--property "key.separator=:" \
+	--topic kafka.usecase.students
+	
+Consume message (within consumer group) <-
+
+./kafka-console-consumer.sh \
+	--bootstrap-server localhost:29092 \
+	--topic kafka.usecase.students \
+	--group usecase-consumer-group \
+	--property print.key=true \
+	--property key.separator=" = " \
+	--from-beginning
+			
+Check current status of offsets
+			
+./kafka-consumer-groups.sh \
+	--bootstrap-server localhost:29092 \
+	--describe \
+	--all-groups
+			
+Consume message simple:
+
+./kafka-console-consumer.sh \
+	--bootstrap-server localhost:29092 \
+	--topic kafka.usecase.students \
+	--from-beginning
