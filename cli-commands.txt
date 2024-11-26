@@ -12,7 +12,8 @@ Message fmt from CLI:
             --property "key.separator=:" \
             --topic kafka.learning.orders
 			
-9999:{"Id":"9999","Description":"AAAAAAAAAAAAAAAAAAAAA","Price":999.999}
+9999:{"id":"9999","description":"AAAAAAAAAAAAAAAAAAAAA","price":999.999}
+100:{"id":"245","description":"ffffffffff","price":12.34}
 
 ###### Topic ######
 
@@ -42,7 +43,7 @@ Deleting Topics
 ./kafka-topics.sh \
 	--bootstrap-server localhost:29092 \
 	--delete \
-	--topic kafka.learning.orders
+	--topic kafka.usecase.students
 	
 
 ###### Message ######
@@ -69,6 +70,15 @@ Check current status of offsets
 			
 ./kafka-consumer-groups.sh \
 	--bootstrap-server localhost:29092 \
+	--list
+
+./kafka-consumer-groups.sh \
+	--bootstrap-server localhost:29092 \
+	--delete \
+	--group test-consumer-group
+
+./kafka-consumer-groups.sh \
+	--bootstrap-server localhost:29092 \
 	--describe \
 	--all-groups
 			
@@ -77,4 +87,9 @@ Consume message simple:
 ./kafka-console-consumer.sh \
 	--bootstrap-server localhost:29092 \
 	--topic kafka.usecase.students \
+	--from-beginning
+
+./kafka-console-consumer.sh \
+	--bootstrap-server localhost:29092 \
+	--topic kafka.learning.orders \
 	--from-beginning

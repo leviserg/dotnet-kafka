@@ -13,8 +13,8 @@ var conf = new ConsumerConfig
 };
 
 
-    var consumer = new ConsumerBuilder<string, MessageModel>(conf)
-        .SetValueDeserializer(new ByteArrayToJsonDeserializer<MessageModel>())
+    var consumer = new ConsumerBuilder<string, MessageContent>(conf)
+        .SetValueDeserializer(new ByteArrayToJsonDeserializer<MessageContent>())
         .Build();
 
     consumer.Subscribe(topic);
@@ -33,6 +33,11 @@ var conf = new ConsumerConfig
             {
                 var receivedMessage = consumer.Consume(cts.Token);
                 Console.WriteLine($"{receivedMessage.Message.Timestamp.UtcDateTime.ToString("HH:mm:ss")} : '{receivedMessage.Value.ToString()}' at: '{receivedMessage.TopicPartitionOffset}'.");
+                if (cts.IsCancellationRequested)
+                {
+                    consumer.Close();
+                    break;
+                }
             }
             catch (ConsumeException e)
             {
@@ -47,7 +52,6 @@ var conf = new ConsumerConfig
     }
     finally
     {
-        consumer.Close();
         consumer.Dispose();
     }
 

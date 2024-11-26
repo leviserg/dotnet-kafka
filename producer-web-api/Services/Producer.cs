@@ -8,7 +8,7 @@ namespace producer_web_api.Services
     {
         const string topic = "kafka.learning.orders";
 
-        public async Task<MessageModel> SendMessageAsync(MessageModel message)
+        public async Task<MessageContent> SendMessageAsync(Message<string, MessageContent> message)
         {
 
             ProducerConfig config = new ProducerConfig
@@ -30,19 +30,19 @@ namespace producer_web_api.Services
                 Acks = Acks.All
             };
 
-            var producer = new ProducerBuilder<string, MessageModel>(config)
-                .SetValueSerializer(new JsonToByteArraySerializer<MessageModel>())
+            var producer = new ProducerBuilder<string, MessageContent>(config)
+                .SetValueSerializer(new JsonToByteArraySerializer<MessageContent>())
                 .Build();
 
             try
             {
 
-                producer.Produce(topic, new Message<string, MessageModel> { Key = message.Id, Value = message },
+                producer.Produce(topic, message,
                 (deliveryReport) =>
                 {
                     if (deliveryReport.Error.IsError)
                     {
-                        throw new ProduceException<string, MessageModel>(deliveryReport.Error, deliveryReport);
+                        throw new ProduceException<string, MessageContent>(deliveryReport.Error, deliveryReport);
                     }
                     else
                     {
@@ -52,7 +52,7 @@ namespace producer_web_api.Services
 
                 producer.Flush(TimeSpan.FromSeconds(20));
 
-                return await Task.FromResult(message);
+                return await Task.FromResult(message.Value);
 
             }
             catch (Exception ex) {
