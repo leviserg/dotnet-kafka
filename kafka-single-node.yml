@@ -1,5 +1,6 @@
+name:
+   kafka-single-node
 services:
-
 #running kafka without zookeeper (using KRaft)
 #Kafka Service
   kafka:

@@ -1,4 +1,5 @@
 PowerShell:
+> docker compose -f kafka-single-node.yml up -d (docker compose -f kafka-single-node.yml down)
 > docker exec -it kafka-broker /bin/bash
 > cd /opt/bitnami/kafka/bin
 > ls {bin, config, logs ...}
