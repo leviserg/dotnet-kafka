@@ -22,7 +22,7 @@ namespace producer_web_api.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="message">Request Body sample: {"key": "314", "value": { "id": "314", "description": "The PI number", "price": 314.159}</param>
+        /// <param name="message">Request Body sample: {"key": "314", "value": { "id": "314", "description": "The PI number", "price": 314.159} }</param>
         /// <returns>value from message: type of MessageModel</returns>
         [HttpPost("sendmessage", Name = "sendmessage")] // request
         public async Task<IActionResult> SendMessageAsync([FromBody] Message<string, MessageContent> message)
